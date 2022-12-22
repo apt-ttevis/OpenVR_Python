@@ -8,7 +8,7 @@ v = triad_openvr.triad_openvr()
 v.print_discovered_objects()
 
 if len(sys.argv) == 1:                                   # Default interval value -- sys.argv will always have a length of 1 by default. sys.argv contains the name of the file being run
-    interval = 1/250                                     # .004 seconds --> 4ms
+    interval = 1/200                                    # .004 seconds --> 4ms
     # try 1/200 for 200Hz / 5ms ?
     print("\nDefault Interval: ", str(interval))
 elif len(sys.argv) == 2:                                 # Option to add time interval as argument when calling program via terminal
@@ -53,9 +53,9 @@ if interval:                    # program begins once interval is established
         txt += str(time.time())
         txt += "\n"
 
-        # sleep_time = interval-(time.time()-start)
-        # if sleep_time>0:
-        #    time.sleep(sleep_time)
+        sleep_time = interval-(time.time()-start)
+        if sleep_time>0:
+           time.sleep(sleep_time)
     f.write("Interval: " + str(interval) + "\nRun Time: " + str(max) + "\n")
     f.write(txt)    # drop this outside of while. fill array with values within loop, write after
 
