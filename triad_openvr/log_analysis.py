@@ -1,8 +1,8 @@
 
-def getTiming(fName):
+def getTiming(fName, wName):
     
     f = open(fName, 'r+')
-    w = open('timing_output.txt', 'w+')
+    w = open(wName, 'w+')
     time1 = 0.0
     time2 = 0.0
     for line in f:
@@ -35,13 +35,10 @@ def getTiming(fName):
                 timing_string = "Period: " + per_format + " seconds\nFrequency: " + freq_format + " Hz\n\n"
                 w.write(timing_string)
                 time1 = time2
-
-
-            
-
     f.close()
     w.close()
 
 
 logfile = input("Log File: ")
-getTiming(logfile)
+writeFile = logfile.rstrip(".txt") + "-TIME.txt"
+getTiming(logfile, writeFile)

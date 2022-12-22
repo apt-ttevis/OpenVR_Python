@@ -38,7 +38,7 @@ f = open(timestr, "w")
 
 if interval:                    # program begins once interval is established
     begin = time.time()         # time = 0
-    max = 30                    # duration of tracking
+    max = 10                    # duration of tracking
     txt = ""
     while(time.time()-begin < max):
         start = time.time()
@@ -56,7 +56,7 @@ if interval:                    # program begins once interval is established
         # sleep_time = interval-(time.time()-start)
         # if sleep_time>0:
         #    time.sleep(sleep_time)
-
+    f.write("Interval: " + str(interval) + "\nRun Time: " + str(max) + "\n")
     f.write(txt)    # drop this outside of while. fill array with values within loop, write after
 
 f.close()
