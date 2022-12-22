@@ -1,7 +1,8 @@
 
-def getPeriods(fName):
+def getTiming(fName):
     
     f = open(fName, 'r+')
+    w = open('timing_output.txt', 'w+')
     time1 = 0.0
     time2 = 0.0
     for line in f:
@@ -22,20 +23,25 @@ def getPeriods(fName):
                 # print("\nDUPLICATE FOUND\n")
           
             if float(time2) - float(time1) > 0:          # checks whether time has changed
-                print("\nTime1: ", time1, "\nTime2: ", time2)
+                # print("\nTime1: ", time1, "\nTime2: ", time2)
+                time_string = "Time1: " + str(time1) + "\nTime2: " + str(time2) + "\n"
+                w.write(time_string)
                 period = float(time2) - float(time1)
                 per_format = f'{period:.5f}'
                 frequency = 1 / period
                 freq_format = f'{frequency:.2f}'
-                print("Period: ", per_format, " seconds")
-                print("Frequency: ", freq_format, " Hz")
+                # print("Period: ", per_format, " seconds")
+                # print("Frequency: ", freq_format, " Hz")
+                timing_string = "Period: " + per_format + " seconds\nFrequency: " + freq_format + " Hz\n\n"
+                w.write(timing_string)
                 time1 = time2
 
 
             
 
     f.close()
+    w.close()
 
 
-
-getPeriods("2022_12_22-13_17_14.txt")
+logfile = input("Log File: ")
+getTiming(logfile)
