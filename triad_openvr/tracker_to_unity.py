@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 from statistics import mean 
 import sys
+import socket
 
 
 # Examines output log to calculate frequency between reads from device
