@@ -3,51 +3,11 @@ import time
 from datetime import datetime
 from statistics import mean 
 import sys
+import struct
 import socket
 
-
-# Examines output log to calculate frequency between reads from device
-# Writes frequencies to a second text file after calculating
-def getTiming(fName, wName):
-    f = open(fName, 'r+')
-    w = open(wName, 'w+')
-    time1 = 0.0
-    time2 = 0.0
-    with open(fName) as x:
-        for line in x:
-            read = f.readline().split(',')      # get whole line as array, splitting by comma
-            if len(read) > 6:               # checks to see if array was parsed correctly and had all of its elements before looking for time value
-                time2 = read[7]
-                
-                if (float(time1) == 0):   # checks whether there is an initial time1 value
-                    time1 = float(read[7])          # assigns initial time value to replace 0
-                    
-                if float(time2) - float(time1) > 0:          # new time value found
-                    # time_string = "Time1: " + str(time1) + "\nTime2: " + str(time2)      # record time1 and time2 values
-                    # w.write(time_string)
-                    period = float(time2) - float(time1)        # calculate time elapsed
-                    per_format = f'{period:.5f}'
-                    frequency = 1 / period                      # calculate frequency
-                    freq_format = f'{frequency:.2f}'
-                    # timing_string = "Period: " + per_format + " seconds\nFrequency: " + freq_format + " Hz\n\n"
-                    timing_string = freq_format + "\n"
-                    w.write(timing_string)
-                    time1 = float(read[7])              # time2 becomes new time1 to compare next value against
-        f.close()
-        w.close()
-
-
-# Method for checking against output of getTiming() to see average frequency for a given log
-def freqStability(fName):
-    read = []
-    f = open(fName, 'r+')
-    with open(fName) as x:
-        for line in x:
-            freq = float(f.readline().strip())
-            read.append(freq)     
-    print("Average Frequency: ", (mean(read)), " Hz")
-    f.close()
-
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_address = ('10.0.1.48', 8051)
 
 v = triad_openvr.triad_openvr()
 # v.print_discovered_objects()
@@ -89,6 +49,7 @@ while(time.time()-begin < max): # while for program time limit
         #     txt += "%.4f" % each
         #     txt += ","
     for each in v.devices["hmd_1"].get_pose_quaternion():       # get tracker data
+        sent = sock.sendto(struct.pack('d'*len(each), *each), server_address)
         txt += "%.4f" % each
         txt += ","
     #########################
@@ -102,15 +63,5 @@ while(time.time()-begin < max): # while for program time limit
 
 
 f.write("Interval: " + str(interval) + "\nRun Time: " + str(max) + "\n")
-f.write(txt)    # drop this outside of while. fill array with values within loop, write after
+f.write(txt)
 f.close()
-
-
-# Analysis #
-writeFile = timestr.rstrip(".txt") + "-TIME.txt"
-getTiming(timestr, writeFile)
-# print(writeFile)
-# freqStability(writeFile)
-
-# Can we access the IMU directly? Are we limited to the rate of the base station? Might be slower than IMU
-# Eye tracking features -- eye fields? additional data? 
