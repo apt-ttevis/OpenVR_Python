@@ -17,15 +17,15 @@ def getTiming(fName, wName):
                 continue
           
             if float(time2) - float(time1) > 0:          # new time value found
-                time_string = "Time1: " + str(time1) + "\nTime2: " + str(time2) + "\n"
+                time_string = "Time1: " + str(time1) + "\nTime2: " + str(time2) + "\n"      # record time1 and time2 values
                 w.write(time_string)
-                period = float(time2) - float(time1)
+                period = float(time2) - float(time1)        # calculate time elapsed
                 per_format = f'{period:.5f}'
-                frequency = 1 / period
+                frequency = 1 / period                      # calculate frequency
                 freq_format = f'{frequency:.2f}'
                 timing_string = "Period: " + per_format + " seconds\nFrequency: " + freq_format + " Hz\n\n"
                 w.write(timing_string)
-                time1 = time2
+                time1 = time2               # time2 becomes new time1 to compare next value against
     f.close()
     w.close()
 
