@@ -6,12 +6,9 @@ import sys
 import time
 import threading
 from datetime import datetime
-
 import triad_openvr
 
 # v = triad_openvr.triad_openvr()
-now = datetime.now()
-BUFFER = 1024
 
 # Test UDP Send
 # Unity_Listen_Port = 5123
@@ -65,6 +62,10 @@ def getTrackerData():
 
 
 
-# start listening
-t = threading.Thread(target=listenUDP)
-t.start()
+try:
+    # start listening
+    t = threading.Thread(target=listenUDP)
+    t.start()
+
+except KeyboardInterrupt:
+    t.stop()

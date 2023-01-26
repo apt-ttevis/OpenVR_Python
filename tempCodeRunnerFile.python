@@ -1,0 +1,17 @@
+import requests
+import json
+
+# Stock ticker symbol
+ticker = 'GME'
+
+# API endpoint to get stock information
+url = f'https://api.iextrading.com/1.0/stock/{ticker}/quote'
+
+# Send GET request to API
+response = requests.get(url)
+
+# Convert response to JSON
+data = json.loads(response.text)
+
+# Print current price of stock
+print('Current price of ' + ticker + ': $' + str(data['latestPrice']))
